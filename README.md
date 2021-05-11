@@ -6,7 +6,10 @@
    <li>
       P2P
       <ul>
-         <li>Kazaa</li>
+         <li>Ares</li>
+         <li>BitComet</li>
+         <li>KaZaA</li>
+         <li>LimeWire</li>
       </ul>
    </li>
    <li>NetBios</li>

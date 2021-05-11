@@ -8,6 +8,7 @@
       <ul>
          <li>Ares</li>
          <li>BitComet</li>
+         <li>eMule</li>
          <li>KaZaA</li>
          <li>LimeWire</li>
       </ul>

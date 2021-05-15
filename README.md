@@ -2,7 +2,7 @@
 
 <h1>Win32 API</h1>
 
-<h2>Study of propagation techniques used by viruses.</h2>
+<h2>Study of Propagation Techniques Used by Viruses</h2>
 <ul>
    <li>Win32 Api</li>
    <li>

@@ -1,5 +1,7 @@
 <img src="https://www.kaspersky.com/content/en-global/images/repository/isc/2017-images/virus-img-07.jpg" width="100%" />
+
 <h1>Win32 API</h1>
+
 <h2>Study of propagation techniques used by viruses.</h2>
 <ul>
    <li>Win32 Api</li>
